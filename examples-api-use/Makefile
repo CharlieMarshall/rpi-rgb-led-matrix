@@ -1,7 +1,7 @@
 CFLAGS=-Wall -O3 -g -Wextra -Wno-unused-parameter
 CXXFLAGS=$(CFLAGS)
 OBJECTS=demo-main.o minimal-example.o c-example.o text-example.o clock.o
-BINARIES=demo minimal-example c-example text-example clock
+BINARIES=demo minimal-example c-example text-example clock cswLED cswImg cswScroll cswABScroll
 
 # Where our library resides. You mostly only need to change the
 # RGB_LIB_DISTRIBUTION, this is where the library is checked out.
@@ -23,6 +23,14 @@ demo : demo-main.o $(RGB_LIBRARY)
 minimal-example : minimal-example.o
 text-example: text-example.o
 clock : clock.o
+cswLED : FORCE
+	$(CXX) $(CXXFLAGS) -o $@ cswLogger.cc cswLED.cc `/usr/lib/arm-linux-gnueabihf/ImageMagick-6.8.9/bin-Q16/Magick++-config --cxxflags --cppflags --ldflags --libs` -lcurl -llept -ltesseract -I$(RGB_INCDIR) $(LDFLAGS)
+cswImg : FORCE
+	$(CXX) $(CXXFLAGS) -o $@ cswImg.cc `/usr/lib/arm-linux-gnueabihf/ImageMagick-6.8.9/bin-Q16/Magick++-config --cxxflags --cppflags --ldflags --libs` -lcurl -llept -ltesseract -I$(RGB_INCDIR) $(LDFLAGS)
+cswScroll : FORCE
+	$(CXX) $(CXXFLAGS) -o $@ cswScroll.cc `/usr/lib/arm-linux-gnueabihf/ImageMagick-6.8.9/bin-Q16/Magick++-config --cxxflags --cppflags --ldflags --libs` -lcurl -llept -ltesseract -I$(RGB_INCDIR) $(LDFLAGS)
+cswABScroll : FORCE
+	$(CXX) $(CXXFLAGS) -o $@ cswLogger.cc cswABScroll.cc `/usr/lib/arm-linux-gnueabihf/ImageMagick-6.8.9/bin-Q16/Magick++-config --cxxflags --cppflags --ldflags --libs` -lcurl -llept -ltesseract -I$(RGB_INCDIR) $(LDFLAGS)
 
 # All the binaries that have the same name as the object file.q
 % : %.o $(RGB_LIBRARY)

@@ -113,6 +113,9 @@ void imgToStr(char *a, char *b) {
 
   // Open input images with leptonica library
   Pix *image = pixRead("/home/pi/cswLED/cache/cropped.png");
+
+  // set the PSM mode, defaults to PSM_SINGLE_BLOCK
+  //api->SetPageSegMode(tesseract::PSM_SINGLE_LINE);
   api->SetImage(image);
 
   // Restrict recognition to a sub-rectangle of the image call, SetRectangle(left, top, width, height) after SetImage.
@@ -128,20 +131,22 @@ void imgToStr(char *a, char *b) {
 //  for(int y=0; outB[y] != '\0'; y++)
 //    printf("Char %d: %c\n", y, outB[y]);
 
-  int i=0;
-  for(i=0; outA[i] != '\0'; i++) {
+  int i, j;
+  for(i=0,j=0; outA[i] != '\0'; i++) {
       if(i>4 || outA[i] == '\n')
 	break;
-      a[i] = outA[i];
+      if(outA[i] != ' ')
+        a[j++] = outA[i];
   }
-  a[i] = '\0';
+  a[j] = '\0';
 
-  for(i=0; outB[i] != '\0'; i++){
+  for(i=0,j=0; outB[i] != '\0'; i++){
       if(i>4 || outB[i] == '\n')
         break;
-      b[i]=outB[i];
+      if(outB[i] != ' ')
+        b[j++] = outB[i];
   }
-  b[i] = '\0';
+  b[j] = '\0';
 
 // try this instead // doesnt seem to work on the *a++ = *outA++ line
 /*
